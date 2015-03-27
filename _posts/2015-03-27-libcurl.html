@@ -1,0 +1,510 @@
+---
+layout: default
+title: Libcurl
+---
+
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=x-cp20936">
+<meta name=Generator content="Microsoft Word 12 (filtered)">
+<title>Libcurl开发库基础使用指导（一）</title>
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:宋体;
+	panose-1:2 1 6 0 3 1 1 1 1 1;}
+@font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+@font-face
+	{font-family:Consolas;
+	panose-1:2 11 6 9 2 2 4 3 2 4;}
+@font-face
+	{font-family:幼圆;}
+@font-face
+	{font-family:微软雅黑;
+	panose-1:2 11 5 3 2 2 4 2 2 4;}
+@font-face
+	{font-family:"\@微软雅黑";
+	panose-1:2 11 5 3 2 2 4 2 2 4;}
+@font-face
+	{font-family:"\@宋体";
+	panose-1:2 1 6 0 3 1 1 1 1 1;}
+@font-face
+	{font-family:"\@幼圆";}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	text-align:justify;
+	text-justify:inter-ideograph;
+	font-size:10.5pt;
+	font-family:"Times New Roman","serif";}
+h1
+	{margin-top:17.0pt;
+	margin-right:0cm;
+	margin-bottom:16.5pt;
+	margin-left:0cm;
+	text-align:justify;
+	text-justify:inter-ideograph;
+	line-height:240%;
+	page-break-after:avoid;
+	font-size:22.0pt;
+	font-family:"Times New Roman","serif";}
+h2
+	{margin-top:13.0pt;
+	margin-right:0cm;
+	margin-bottom:13.0pt;
+	margin-left:0cm;
+	text-align:justify;
+	text-justify:inter-ideograph;
+	line-height:172%;
+	page-break-after:avoid;
+	font-size:16.0pt;
+	font-family:"Arial","sans-serif";}
+p.MsoHeader, li.MsoHeader, div.MsoHeader
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	text-align:justify;
+	text-justify:inter-ideograph;
+	layout-grid-mode:char;
+	border:none;
+	padding:0cm;
+	font-size:9.0pt;
+	font-family:"Times New Roman","serif";}
+p.MsoFooter, li.MsoFooter, div.MsoFooter
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	layout-grid-mode:char;
+	font-size:9.0pt;
+	font-family:"Times New Roman","serif";}
+ /* Page Definitions */
+ @page WordSection1
+	{size:595.3pt 841.9pt;
+	margin:72.0pt 90.0pt 72.0pt 90.0pt;
+	layout-grid:15.6pt;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+
+</head>
+
+<body bgcolor=white lang=ZH-CN style='text-justify-trim:punctuation'>
+
+<div class=WordSection1 style='layout-grid:15.6pt'>
+
+<h1><span lang=EN-US>Libcurl</span><span style='font-family:"微软雅黑","sans-serif"'>开发库简要使用指导（一）</span></h1>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-family:幼圆'>关于</span><span lang=EN-US>Libcurl</span><span
+style='font-family:幼圆'>开发库：</span></p>
+
+<p class=MsoNormal><span lang=EN-US>Libcurl</span><span style='font-family:
+幼圆'>开发库是一个易用、功能强大的多协议文件传输开发库，可以应用于多种系统下。常见的网络文件传输功能，如</span><span lang=EN-US>HTTP</span><span
+style='font-family:幼圆'>、</span><span lang=EN-US>FTP</span><span
+style='font-family:幼圆'>下载和上传等功能，用</span><span lang=EN-US>Libcurl</span><span
+style='font-family:幼圆'>都能轻易实现。</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-family:幼圆'>本文目的是对</span><span lang=EN-US>Libcurl</span><span
+style='font-family:幼圆'>开发库的基础使用提供指导。下面开始正文：</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<h2><span style='font-family:宋体'>一、获取和使用方法</span></h2>
+
+<p class=MsoNormal><span lang=EN-US>1</span><span style='font-family:幼圆'>、获取开发库：</span></p>
+
+<p class=MsoNormal><span lang=EN-US>Libcurl</span><span style='font-family:
+幼圆'>开发库可以从其官网上获取，地址为：</span><u><span lang=EN-US style='color:blue'><a
+href="http://curl.haxx.se/download.html"><span style='color:blue'>http://curl.haxx.se/download.html</span></a></span></u></p>
+
+<p class=MsoNormal style='margin-left:0cm;text-indent:0cm'><span lang=EN-US>2、</span><span
+style='font-family:幼圆'>编译：</span></p>
+
+<p class=MsoNormal><span style='font-family:幼圆'>把下载之后的压缩包丢到</span><span
+lang=EN-US>linux</span><span style='font-family:幼圆'>系统里，解压，进入开发库目录下，执行</span><span
+lang=EN-US>make</span><span style='font-family:幼圆'>命令，即可进行编译。编译完后，进入到</span> <b><span
+lang=EN-US>/lib/.lib/</span></b><span lang=EN-US> </span><span
+style='font-family:幼圆'>目录下，就能找到编译好的静</span><span lang=EN-US>/</span><span
+style='font-family:幼圆'>动态库文件，即</span><span lang=EN-US>.a</span><span
+style='font-family:幼圆'>和</span><span lang=EN-US>.so</span><span
+style='font-family:幼圆'>文件。</span></p>
+
+<p class=MsoNormal style='margin-left:0cm;text-indent:0cm'><span lang=EN-US>3、</span><span
+style='font-family:幼圆'>使用：</span></p>
+
+<p class=MsoNormal><span style='font-family:幼圆'>把开发库</span><span lang=EN-US>/include</span><span
+style='font-family:幼圆'>目录下的</span><span lang=EN-US>curl</span><span
+style='font-family:幼圆'>文件夹拷贝到你的项目的</span><span lang=EN-US>include</span><span
+style='font-family:幼圆'>目录下，这个</span><span lang=EN-US>curl</span><span
+style='font-family:幼圆'>目录里面包含了所有会用到的头文件，不过你只需要在你的项目里面</span><span lang=EN-US>include<b>
+curl.h</b></span><span style='font-family:幼圆'>这个头文件就行了，其他头文件不用管。然后根据实际需求，拷贝一份上一步编译出来的</span><span
+lang=EN-US>.a</span><span style='font-family:幼圆'>或</span><span lang=EN-US>.so</span><span
+style='font-family:幼圆'>库，到你的</span><span lang=EN-US>include</span><span
+style='font-family:幼圆'>目录下，然后在你的项目的</span><span lang=EN-US>makefile</span><span
+style='font-family:幼圆'>编译语句里面加上</span><b><span lang=EN-US>-lcurl</span></b><span
+lang=EN-US>(</span><span style='font-family:幼圆'>视情况增加其他选项</span><span
+lang=EN-US>)</span><span style='font-family:幼圆'>，编译的时候就会把</span><span
+lang=EN-US>libcurl</span><span style='font-family:幼圆'>库编进你的项目里，到这一步，你就能在你的项目里使用</span><span
+lang=EN-US>libcurl</span><span style='font-family:幼圆'>库的功能了。</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<h2 style='margin-left:0cm;text-indent:0cm'><span lang=EN-US>二、</span><span
+style='font-family:宋体'>开始使用</span><span lang=EN-US>libcurl</span></h2>
+
+<p class=MsoNormal><span style='font-family:幼圆'>下面先来一个简单的例子说明</span><span
+lang=EN-US>libcurl</span><span style='font-family:幼圆'>的初步使用方法：</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-family:幼圆'>需求：输入一个</span><span lang=EN-US>http</span><span
+style='font-family:幼圆'>的</span><span lang=EN-US>url</span><span
+style='font-family:幼圆'>，完成这个</span><span lang=EN-US>url</span><span
+style='font-family:幼圆'>指向的文件的下载。</span></p>
+
+<p class=MsoNormal><span style='font-family:幼圆'>先来一段代码，完成上面的需求所需要的最小功能代码为：</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><b><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas;color:#7F0055'>#include</span></b><span
+lang=EN-US style='font-size:9.0pt;font-family:Consolas;color:black'> </span><span
+lang=EN-US style='font-size:9.0pt;font-family:Consolas;color:#2A00FF'>&lt;stdlib.h&gt;</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><b><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas;color:#7F0055'>#include</span></b><span
+lang=EN-US style='font-size:9.0pt;font-family:Consolas;color:black'> </span><span
+lang=EN-US style='font-size:9.0pt;font-family:Consolas;color:#2A00FF'>&quot;curl/curl.h&quot;</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas'>&nbsp;</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas;color:#3F7F5F'>/*</span><span
+style='font-size:9.0pt;font-family:Consolas;color:#3F7F5F'>写文件的函数<span
+lang=EN-US>,</span>下载过程中<span lang=EN-US>,<u>libcurl</u></span>会不断调用这个函数<span
+lang=EN-US>,</span></span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span style='font-size:9.0pt;
+font-family:Consolas;color:#3F7F5F'>把接收到的数据传给这个函数进行处理<span lang=EN-US>*/</span></span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas;color:black'>size_t <b>write_data</b>(</span><b><span
+lang=EN-US style='font-size:9.0pt;font-family:Consolas;color:#7F0055'>void</span></b><span
+lang=EN-US style='font-size:9.0pt;font-family:Consolas;color:black'> *ptr,
+size_t size, size_t nmemb, </span><b><span lang=EN-US style='font-size:9.0pt;
+font-family:Consolas;color:#7F0055'>void</span></b><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas;color:black'> *stream)</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas;color:black'>{</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;&nbsp;&nbsp;
+size_t written = fwrite(ptr, size, nmemb, (FILE *)stream);</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;&nbsp;&nbsp; </span><b><span
+lang=EN-US style='font-size:9.0pt;font-family:Consolas;color:#7F0055'>return</span></b><span
+lang=EN-US style='font-size:9.0pt;font-family:Consolas;color:black'> written;</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas;color:black'>}</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas'>&nbsp;</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas;color:#3F7F5F'>/*</span><span
+style='font-size:9.0pt;font-family:Consolas;color:#3F7F5F'>下载任务入口函数<span
+lang=EN-US>,</span>传入一个<u><span lang=EN-US>url</span></u><span lang=EN-US>,</span>执行下载<span
+lang=EN-US>*/</span></span></p>
+
+<p class=MsoNormal style='text-autospace:none'><b><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas;color:#7F0055'>void</span></b><span
+lang=EN-US style='font-size:9.0pt;font-family:Consolas;color:black'> <b>DownloadUrl</b>(</span><b><span
+lang=EN-US style='font-size:9.0pt;font-family:Consolas;color:#7F0055'>char</span></b><span
+lang=EN-US style='font-size:9.0pt;font-family:Consolas;color:black'>* szUrl)</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas;color:black'>{</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;&nbsp;&nbsp; </span><span
+lang=EN-US style='font-size:9.0pt;font-family:Consolas;color:#3F7F5F'>/*</span><span
+style='font-size:9.0pt;font-family:Consolas;color:#3F7F5F'>创建一个二进制文件指针用于下载文件的保存<span
+lang=EN-US>*/</span></span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;&nbsp;&nbsp;
+FILE* pFile = fopen(</span><span lang=EN-US style='font-size:9.0pt;font-family:
+Consolas;color:#2A00FF'>&quot;SampleFile&quot;</span><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas;color:black'>, </span><span
+lang=EN-US style='font-size:9.0pt;font-family:Consolas;color:#2A00FF'>&quot;<u>wb</u>&quot;</span><span
+lang=EN-US style='font-size:9.0pt;font-family:Consolas;color:black'>);</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;&nbsp;&nbsp; </span><b><span
+lang=EN-US style='font-size:9.0pt;font-family:Consolas;color:#7F0055'>if</span></b><span
+lang=EN-US style='font-size:9.0pt;font-family:Consolas;color:black'>(!pFile) </span><b><span
+lang=EN-US style='font-size:9.0pt;font-family:Consolas;color:#7F0055'>return</span></b><span
+lang=EN-US style='font-size:9.0pt;font-family:Consolas;color:black'>;</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas'>&nbsp;</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;&nbsp;&nbsp; </span><span
+lang=EN-US style='font-size:9.0pt;font-family:Consolas;color:#3F7F5F'>/*</span><span
+style='font-size:9.0pt;font-family:Consolas;color:#3F7F5F'>使用<u><span
+lang=EN-US>libcurl</span></u>的第一步<span lang=EN-US>,</span>全局初始化<span
+lang=EN-US>,</span>每个程序只需要在开始时执行一次<span lang=EN-US>*/</span></span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;&nbsp;&nbsp;
+curl_global_init(CURL_GLOBAL_ALL);</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas'>&nbsp;</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;&nbsp;&nbsp; </span><span
+lang=EN-US style='font-size:9.0pt;font-family:Consolas;color:#3F7F5F'>/*</span><span
+style='font-size:9.0pt;font-family:Consolas;color:#3F7F5F'>创建一个<u><span
+lang=EN-US>libcurl</span></u>句柄进行操作<span lang=EN-US>,</span>一个句柄就是一项任务<span
+lang=EN-US>*/</span></span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;&nbsp; &nbsp;</span><span
+lang=EN-US style='font-size:9.0pt;font-family:Consolas;color:#005032'>CURL</span><span
+lang=EN-US style='font-size:9.0pt;font-family:Consolas;color:black'>*
+curl_handle = curl_easy_init();</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas'>&nbsp;</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;&nbsp;&nbsp; </span><span
+lang=EN-US style='font-size:9.0pt;font-family:Consolas;color:#3F7F5F'>/*</span><span
+style='font-size:9.0pt;font-family:Consolas;color:#3F7F5F'>给句柄设置参数<span
+lang=EN-US>,</span>每一个句柄</span><span style='font-size:9.0pt;font-family:宋体;
+color:#3F7F5F'>通常</span><span style='font-size:9.0pt;font-family:Consolas;
+color:#3F7F5F'>最少需要设置以下<span lang=EN-US>3</span>项参数<span lang=EN-US>*/</span></span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;&nbsp;&nbsp;
+curl_easy_setopt(curl_handle, </span><i><span lang=EN-US style='font-size:9.0pt;
+font-family:Consolas;color:#0000C0'>CURLOPT_URL</span></i><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas;color:black'>, szUrl);</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;&nbsp;&nbsp;
+curl_easy_setopt(curl_handle, </span><i><span lang=EN-US style='font-size:9.0pt;
+font-family:Consolas;color:#0000C0'>CURLOPT_WRITEFUNCTION</span></i><span
+lang=EN-US style='font-size:9.0pt;font-family:Consolas;color:black'>,
+write_data);</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;&nbsp;&nbsp;
+curl_easy_setopt(curl_handle, </span><i><span lang=EN-US style='font-size:9.0pt;
+font-family:Consolas;color:#0000C0'>CURLOPT_FILE</span></i><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas;color:black'>, pFile);</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas'>&nbsp;</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;&nbsp;&nbsp; </span><span
+lang=EN-US style='font-size:9.0pt;font-family:Consolas;color:#3F7F5F'>/*</span><span
+style='font-size:9.0pt;font-family:Consolas;color:#3F7F5F'>执行任务<span
+lang=EN-US>*/</span></span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;&nbsp;&nbsp;
+curl_easy_perform(curl_handle);</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas'>&nbsp;</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;&nbsp;&nbsp; </span><span
+lang=EN-US style='font-size:9.0pt;font-family:Consolas;color:#3F7F5F'>/*</span><span
+style='font-size:9.0pt;font-family:Consolas;color:#3F7F5F'>执行完后</span><span
+style='font-size:9.0pt;font-family:宋体;color:#3F7F5F'>释放</span><span
+style='font-size:9.0pt;font-family:Consolas;color:#3F7F5F'>句柄</span><span
+style='font-size:9.0pt;font-family:宋体;color:#3F7F5F'>资源</span><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas;color:#3F7F5F'>*/</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;&nbsp;&nbsp;
+curl_easy_cleanup(curl_handle);</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas'>&nbsp;</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;&nbsp;&nbsp; </span><span
+lang=EN-US style='font-size:9.0pt;font-family:Consolas;color:#3F7F5F'>/*<u>libcurl</u></span><span
+style='font-size:9.0pt;font-family:Consolas;color:#3F7F5F'>的全局清理函数<span
+lang=EN-US>,</span>每个程序的最后执行一次即可<span lang=EN-US>*/</span></span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;&nbsp;&nbsp;
+curl_global_cleanup();</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;&nbsp;&nbsp; </span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;&nbsp;&nbsp;
+fclose(pFile);</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas;color:black'>}</span></p>
+
+<p class=MsoNormal><span lang=EN-US style='font-size:9.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-family:幼圆'>程序流程解析：</span></p>
+
+<p class=MsoNormal style='margin-left:0cm;text-indent:0cm'><span lang=EN-US>1、</span><span
+lang=EN-US>libcurl</span><span style='font-family:幼圆'>有两个全局函数，需要在程序的开头和结束的地方执行一次：</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+curl_global_init(CURL_GLOBAL_ALL)</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+curl_global_cleanup()</span></p>
+
+<p class=MsoNormal><span style='font-family:幼圆'>尽管可以在程序中多次执行全局初始化和清理，但并不推荐这样做，通常各执行一次即可。</span></p>
+
+<p class=MsoNormal><span lang=EN-US>curl_global_init</span><span
+style='font-family:幼圆'>函数的入参有好几个，不过是针对特殊场景的，如果没有特殊需求的话一般选用</span><span
+lang=EN-US>CURL_GLOBAL_ALL</span><span style='font-family:幼圆'>就行了。</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:0cm;text-indent:0cm'><span lang=EN-US>2、</span><span
+lang=EN-US>libcurl</span><span style='font-family:幼圆'>的整个下载执行过程有</span><span
+lang=EN-US>4</span><span style='font-family:幼圆'>步：</span></p>
+
+<p class=MsoNormal style='margin-left:0cm;text-indent:0cm'><span lang=EN-US>(1)
+</span><span lang=EN-US>curl_easy_init&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span
+style='font-family:幼圆'>创建一个下载任务；</span></p>
+
+<p class=MsoNormal style='margin-left:0cm;text-indent:0cm'><span lang=EN-US>(2)
+</span><span lang=EN-US>curl_easy_setopt&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span
+style='font-family:幼圆'>设置任务参数；</span></p>
+
+<p class=MsoNormal style='margin-left:0cm;text-indent:0cm'><span lang=EN-US>(3)
+</span><span lang=EN-US>curl_easy_perform&nbsp;&nbsp; </span><span
+style='font-family:幼圆'>执行任务；</span></p>
+
+<p class=MsoNormal style='margin-left:0cm;text-indent:0cm'><span lang=EN-US>(4)
+</span><span lang=EN-US>curl_easy_cleanup&nbsp;&nbsp;&nbsp; </span><span
+style='font-family:幼圆'>结束后清理该次任务分配到的资源；</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-family:幼圆'>其中</span><span lang=EN-US>134</span><span
+style='font-family:幼圆'>都是写定的，不需要改动，只有</span><span lang=EN-US>curl_easy_setopt</span><span
+style='font-family:幼圆'>这一函数需要根据实际情况进行定制，这个函数就是</span><span lang=EN-US>libcurl</span><span
+style='font-family:幼圆'>功能强大的体现</span><span lang=EN-US>--</span><span
+style='font-family:幼圆'>可以设置的选项非常多，常见的比如设置下载所需的用户名密码（如果要验证用户的话）、代理服务器、重定向控制、</span><span
+lang=EN-US>cookie</span><span style='font-family:幼圆'>、连接时长等等。</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-family:幼圆'>一般来说，</span><i><span
+lang=EN-US style='font-family:Consolas;color:#0000C0'>CURLOPT_URL</span></i><span
+style='font-family:幼圆'>这一项是必须的，毕竟没有地址任务就无法开始。</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-family:幼圆'>上面的例子中，后面还设置了两项：</span><i><span
+lang=EN-US style='font-family:Consolas;color:#0000C0'>CURLOPT_WRITEFUNCTION</span></i><span
+style='font-family:幼圆'>、</span><i><span lang=EN-US style='font-family:Consolas;
+color:#0000C0'>CURLOPT_FILE</span></i><span style='font-family:幼圆'>，这两个选项的作用就是给</span><span
+lang=EN-US>libcurl</span><span style='font-family:幼圆'>传递一个数据处理函数和一个参数用于回调，为了能把接收到的数据保存下来，我的例子里传递了一个文件指针，然后在数据处理函数里面用</span><b><span
+lang=EN-US>fwrite</span></b><span style='font-family:幼圆'>把数据写到文件指针里，用来把下载的文件保存下来。一般要保存文件的话，就需要设置这两项，不过这两项并不是必须的，</span><span
+lang=EN-US>libcurl</span><span style='font-family:幼圆'>有默认的回调函数，如果你不设置自己的回调函数，</span><span
+lang=EN-US>libcurl</span><span style='font-family:幼圆'>就会把接收到的数据打印到</span><span
+lang=EN-US>stdout</span><span style='font-family:幼圆'>上，一般就是显示屏上啦。</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-family:幼圆'>数据处理函数的返回值：</span><i><span
+lang=EN-US style='font-family:Consolas;color:#0000C0'>CURLOPT_WRITEFUNCTION</span></i><span
+style='font-family:幼圆'>指定的函数是有返回值的，返回的是你往文件里写入的数据量大小，如果这个数据量相当于传入的数据量（</span><span
+lang=EN-US>size * nmemb</span><span style='font-family:幼圆'>），那么</span><span
+lang=EN-US>libcurl</span><span style='font-family:幼圆'>会认为当前工作正常，继续进行数据的接收，如果返回的写入数据量与传入数据量不同，则</span><span
+lang=EN-US>libcurl</span><span style='font-family:幼圆'>会认为是一个异常，会把网络连接终止，结束这一次的任务。利用这一点，可以控制文件下载的大小，用来实现一些特殊的功能。</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<h2><span style='font-family:宋体'>三、</span><span lang=EN-US>libcurl</span><span
+style='font-family:宋体'>的控制模式介绍</span></h2>
+
+<p class=MsoNormal><span lang=EN-US>libcurl</span><span style='font-family:
+幼圆'>用来控制下载</span><span lang=EN-US>/</span><span style='font-family:幼圆'>上传的方式有两种：</span><span
+lang=EN-US>easy</span><span style='font-family:幼圆'>和</span><span lang=EN-US>multi</span><span
+style='font-family:幼圆'>。</span></p>
+
+<p class=MsoNormal><span lang=EN-US>easy</span><span style='font-family:幼圆'>模式就是上面的例子中用到的函数，函数名格式为</span><span
+lang=EN-US>curl_easy_xxx</span><span style='font-family:幼圆'>，用来执行单任务。</span></p>
+
+<p class=MsoNormal><span lang=EN-US>multi</span><span style='font-family:幼圆'>模式，函数名格式为</span><span
+lang=EN-US>curl_multi_xxx</span><span style='font-family:幼圆'>，使用流程与</span><span
+lang=EN-US>easy</span><span style='font-family:幼圆'>完全相同，不同的是可以同时执行多个任务，这个模式后面会再进行介绍。</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-family:幼圆'>从上面的例子中我们知道</span><span
+lang=EN-US>easy</span><span style='font-family:幼圆'>模式最少只需要</span><span
+lang=EN-US>6</span><span style='font-family:幼圆'>行代码就能走完整个流程，这个流程还是相当简单的，不过实际上能做的东西还远不止这些。比如</span><span
+lang=EN-US>curl_easy_perform</span><span style='font-family:幼圆'>这个函数是有返回码的，返回码的类型有接近</span><span
+lang=EN-US>90</span><span style='font-family:幼圆'>种，足以帮你分析网络连接的过程中出现的各种问题，利用这个返回码，你的代码能灵活处理各种异常情况，后续会对这个返回码进行进一步的介绍。返回码的使用方法如下：</span></p>
+
+<p class=MsoNormal><span lang=EN-US style='font-size:9.0pt;font-family:Consolas;
+color:#005032;background:white'>CURLcode</span><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas;color:black;background:white'>
+errCode = curl_easy_perform(curl_handle);</span></p>
+
+<p class=MsoNormal><span lang=EN-US style='font-size:9.0pt;font-family:Consolas;
+color:black;background:white'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-family:幼圆'>另外</span><span lang=EN-US>easy</span><span
+style='font-family:幼圆'>模式下提供了一个函数</span><span lang=EN-US>curl_easy_getinfo</span><span
+style='font-family:幼圆'>，在网络连接过程中，</span><span lang=EN-US>libcurl</span><span
+style='font-family:幼圆'>会收集各种各样的信息，比如服务器的响应信息，下载过程中的信息等。利用这个函数可以获取一些特定的信息，后续的使用指导中会对这个函数进行进一步的介绍。</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<h2 style='margin-left:0cm;text-indent:0cm'><span lang=EN-US>四、</span><span
+style='font-family:宋体'>小结</span></h2>
+
+<p class=MsoNormal><span style='font-family:幼圆'>据说太长的文章没人看，这篇使用指导就先到这里。</span></p>
+
+<p class=MsoNormal><span style='font-family:幼圆'>这一篇主要是讲述了一下</span><span
+lang=EN-US>libcurl</span><span style='font-family:幼圆'>最基础的使用方法，后面计划会讲述一些功能的进阶应用，比如利用服务器的返回信息在进行下载前获取文件的格式、断点续传、多线程下载等内容。</span></p>
+
+<p class=MsoNormal><span style='font-family:幼圆'>由于水平问题，文章的错误是在所难免的，如果有不合理的地方，请随时指出。</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+</div>
+
+</body>
+
+</html>
