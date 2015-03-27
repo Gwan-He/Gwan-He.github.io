@@ -1,0 +1,462 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+<meta name=Generator content="Microsoft Word 12 (filtered)">
+<title>Libcurl开发库基础使用指导（一）</title>
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:宋体;
+	panose-1:2 1 6 0 3 1 1 1 1 1;}
+@font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+@font-face
+	{font-family:Consolas;
+	panose-1:2 11 6 9 2 2 4 3 2 4;}
+@font-face
+	{font-family:幼圆;}
+@font-face
+	{font-family:微软雅黑;
+	panose-1:2 11 5 3 2 2 4 2 2 4;}
+@font-face
+	{font-family:"\@微软雅黑";
+	panose-1:2 11 5 3 2 2 4 2 2 4;}
+@font-face
+	{font-family:"\@宋体";
+	panose-1:2 1 6 0 3 1 1 1 1 1;}
+@font-face
+	{font-family:"\@幼圆";}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	text-align:justify;
+	text-justify:inter-ideograph;
+	font-size:10.5pt;
+	font-family:"Times New Roman","serif";}
+h1
+	{margin-top:17.0pt;
+	margin-right:0cm;
+	margin-bottom:16.5pt;
+	margin-left:0cm;
+	text-align:justify;
+	text-justify:inter-ideograph;
+	line-height:240%;
+	page-break-after:avoid;
+	font-size:22.0pt;
+	font-family:"Times New Roman","serif";}
+h2
+	{margin-top:13.0pt;
+	margin-right:0cm;
+	margin-bottom:13.0pt;
+	margin-left:0cm;
+	text-align:justify;
+	text-justify:inter-ideograph;
+	line-height:172%;
+	page-break-after:avoid;
+	font-size:16.0pt;
+	font-family:"Arial","sans-serif";}
+p.MsoHeader, li.MsoHeader, div.MsoHeader
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	text-align:justify;
+	text-justify:inter-ideograph;
+	layout-grid-mode:char;
+	border:none;
+	padding:0cm;
+	font-size:9.0pt;
+	font-family:"Times New Roman","serif";}
+p.MsoFooter, li.MsoFooter, div.MsoFooter
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	layout-grid-mode:char;
+	font-size:9.0pt;
+	font-family:"Times New Roman","serif";}
+ /* Page Definitions */
+ @page WordSection1
+	{size:595.3pt 841.9pt;
+	margin:72.0pt 90.0pt 72.0pt 90.0pt;
+	layout-grid:15.6pt;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+
+</head>
+
+<body bgcolor=white lang=ZH-CN style='text-justify-trim:punctuation'>
+
+<div class=WordSection1 style='layout-grid:15.6pt'>
+
+<h1><span lang=EN-US>Libcurl</span><span style='font-family:"微软雅黑","sans-serif"'>开发库简要使用指导（二）</span></h1>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-family:幼圆'>这是</span><span lang=EN-US>libcurl</span><span
+style='font-family:幼圆'>简要使用指导系列的第二篇。</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-family:幼圆'>本篇的内容主要是加深对</span><span
+lang=EN-US>libcurl</span><span style='font-family:幼圆'>开发库最常用的一些功能的熟悉程度。上一篇里介绍了下载一个</span><span
+lang=EN-US>url</span><span style='font-family:幼圆'>最基础的方法，这一篇将把下载方式改造一下，讲述如何在正式下载前先获得文件的一些基本信息。下面开始正文：</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<h2 style='margin-left:0cm;text-indent:0cm'><span lang=EN-US>一、</span><span
+style='font-family:宋体'>下载前获取</span><span lang=EN-US>url</span><span
+style='font-family:宋体'>的基本信息</span></h2>
+
+<p class=MsoNormal><span style='font-family:幼圆'>为了更好地完成我们的下载任务，光是依靠一个</span><span
+lang=EN-US>url</span><span style='font-family:幼圆'>还是不够的。为了更准确地把握下载的过程，我们通常需要得到其他的一些信息，比如：</span></p>
+
+<p class=MsoNormal style='margin-left:0cm;text-indent:0cm'><span lang=EN-US>1、</span><span
+lang=EN-US>url</span><span style='font-family:幼圆'>是否有效；</span></p>
+
+<p class=MsoNormal style='margin-left:0cm;text-indent:0cm'><span lang=EN-US>2、</span><span
+lang=EN-US>url</span><span style='font-family:幼圆'>指向的文件的大小、格式等文件信息；</span></p>
+
+<p class=MsoNormal style='margin-left:0cm;text-indent:0cm'><span lang=EN-US>3、</span><span
+lang=EN-US>url</span><span style='font-family:幼圆'>连接是否支持断点续传；</span></p>
+
+<p class=MsoNormal><span style='font-family:幼圆'>文件的信息能让我们对下载的文件进行挑选，比如过大或过小的文件不进行下载，又或者是只选择下载某种固定格式的文件；</span><span
+lang=EN-US>url</span><span style='font-family:幼圆'>链接本身的信息，影响我们的下载过程处理，比如如果一个链接支持断点续传，那么我们就可以采用多线程下载的方式以提升下载效率，并且可以降低对网络稳定性的要求。</span></p>
+
+<p class=MsoNormal><span style='font-family:幼圆'>上面的这些信息虽然基础，但会对我们下载方式的选择有重要影响，因此在开始下载前，先获得一些相关信息，将对完成整个下载过程起到积极的帮助。</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<h2 style='margin-left:0cm;text-indent:0cm'><span lang=EN-US>二、</span><span
+style='font-family:宋体'>获取简单的</span><span lang=EN-US>url</span><span
+style='font-family:宋体'>信息示例</span></h2>
+
+<p class=MsoNormal><span style='font-family:幼圆'>为了方便讲解，下面先来一个简单的示例：</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-family:幼圆'>需求：在开始下载之前，获取文件的大小以及服务器是否支持断点续传的信息。</span></p>
+
+<p class=MsoNormal><span style='font-family:幼圆'>要实现上面的需求所需要的最小功能代码为：</span></p>
+
+<p class=MsoNormal><span lang=EN-US style='font-size:9.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><b><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas;color:#7F0055'>#include</span></b><span
+lang=EN-US style='font-size:9.0pt;font-family:Consolas;color:black'> </span><span
+lang=EN-US style='font-size:9.0pt;font-family:Consolas;color:#2A00FF'>&lt;stdlib.h&gt;</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><b><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas;color:#7F0055'>#include</span></b><span
+lang=EN-US style='font-size:9.0pt;font-family:Consolas;color:black'> </span><span
+lang=EN-US style='font-size:9.0pt;font-family:Consolas;color:#2A00FF'>&quot;curl/curl.h&quot;</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas;color:#2A00FF'>&nbsp;</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas;color:#3F7F5F;background:white'>/*</span><span
+style='font-size:9.0pt;font-family:Consolas;color:#3F7F5F;background:white'>功能函数<span
+lang=EN-US>,</span>传入一个<span lang=EN-US>url,</span>获得<span lang=EN-US>url</span>指向的文件的大小<span
+lang=EN-US>,</span>以及文件所在服务器是否支持断点续传<span lang=EN-US>*/</span></span></p>
+
+<p class=MsoNormal style='text-autospace:none'><b><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas;color:#7F0055'>int</span></b><span
+lang=EN-US style='font-size:9.0pt;font-family:Consolas;color:black'> <b>GetDownloadInfo</b>(</span><b><span
+lang=EN-US style='font-size:9.0pt;font-family:Consolas;color:#7F0055'>char</span></b><span
+lang=EN-US style='font-size:9.0pt;font-family:Consolas;color:black'>* szUrl,
+size_t* pnFileSize, </span><b><span lang=EN-US style='font-size:9.0pt;
+font-family:Consolas;color:#7F0055'>bool</span></b><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas;color:black'>* pbDlResumable)</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas;color:black'>{</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas;color:black'>   
+curl_global_init(CURL_GLOBAL_ALL);</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas'>&nbsp;</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas;color:black'>    </span><span
+lang=EN-US style='font-size:9.0pt;font-family:Consolas;color:#005032'>CURL</span><span
+lang=EN-US style='font-size:9.0pt;font-family:Consolas;color:black'>*
+curl_handle = curl_easy_init();</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas'>&nbsp;</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas;color:black'>    </span><span
+lang=EN-US style='font-size:9.0pt;font-family:Consolas;color:#3F7F5F'>/*</span><span
+style='font-size:9.0pt;font-family:Consolas;color:#3F7F5F'>设置下载参数<span
+lang=EN-US>,</span>只发送<span lang=EN-US>Http</span>头请求<span lang=EN-US>,</span>根据协议<span
+lang=EN-US>,</span>从服务器返回的头信息中可以取得很多有用的信息<span lang=EN-US>*/</span></span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas;color:black'>   
+curl_easy_setopt(curl_handle, </span><i><span lang=EN-US style='font-size:9.0pt;
+font-family:Consolas;color:#0000C0'>CURLOPT_URL</span></i><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas;color:black'>, szUrl);</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas;color:black'>   
+curl_easy_setopt(curl_handle, </span><i><span lang=EN-US style='font-size:9.0pt;
+font-family:Consolas;color:#0000C0'>CURLOPT_NOBODY</span></i><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas;color:black'>, 1L);</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas;color:black'>   
+curl_easy_setopt(curl_handle, </span><i><span lang=EN-US style='font-size:9.0pt;
+font-family:Consolas;color:#0000C0'>CURLOPT_RANGE</span></i><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas;color:black'>, </span><span
+lang=EN-US style='font-size:9.0pt;font-family:Consolas;color:#2A00FF'>&quot;0-&quot;</span><span
+lang=EN-US style='font-size:9.0pt;font-family:Consolas;color:black'>);</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas'>&nbsp;</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas;color:black'>    </span><span
+lang=EN-US style='font-size:9.0pt;font-family:Consolas;color:#3F7F5F'>/*</span><span
+style='font-size:9.0pt;font-family:Consolas;color:#3F7F5F'>开始执行任务<span
+lang=EN-US>*/</span></span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas;color:black'>    </span><span
+lang=EN-US style='font-size:9.0pt;font-family:Consolas;color:#005032'>CURLcode</span><span
+lang=EN-US style='font-size:9.0pt;font-family:Consolas;color:black'> errCode =
+curl_easy_perform(curl_handle);</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas'>&nbsp;</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas;color:black'>    </span><span
+lang=EN-US style='font-size:9.0pt;font-family:Consolas;color:#3F7F5F'>/*</span><span
+style='font-size:9.0pt;font-family:Consolas;color:#3F7F5F'>执行完后判断是否执行成功<span
+lang=EN-US>*/</span></span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas;color:black'>    </span><b><span
+lang=EN-US style='font-size:9.0pt;font-family:Consolas;color:#7F0055'>if</span></b><span
+lang=EN-US style='font-size:9.0pt;font-family:Consolas;color:black'>(</span><i><span
+lang=EN-US style='font-size:9.0pt;font-family:Consolas;color:#0000C0'>CURLE_OK</span></i><span
+lang=EN-US style='font-size:9.0pt;font-family:Consolas;color:black'> !=
+errCode){</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas;color:black'>       
+curl_easy_cleanup(curl_handle);</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas;color:black'>        </span><b><span
+lang=EN-US style='font-size:9.0pt;font-family:Consolas;color:#7F0055'>return</span></b><span
+lang=EN-US style='font-size:9.0pt;font-family:Consolas;color:black'> errCode;</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas;color:black'>    }</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas'>&nbsp;</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas;color:black'>    </span><span
+lang=EN-US style='font-size:9.0pt;font-family:Consolas;color:#3F7F5F'>/*</span><span
+style='font-size:9.0pt;font-family:Consolas;color:#3F7F5F'>利用<span lang=EN-US>getinfo</span>函数<span
+lang=EN-US>,</span>传入一个参数<span lang=EN-US>,</span>尝试从服务器的响应信息中获取文件的大小<span
+lang=EN-US>*/</span></span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas;color:black'>    </span><b><span
+lang=EN-US style='font-size:9.0pt;font-family:Consolas;color:#7F0055'>double</span></b><span
+lang=EN-US style='font-size:9.0pt;font-family:Consolas;color:black'> dFileSize
+= 0;</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas;color:black'>   
+curl_easy_getinfo(curl_handle, </span><i><span lang=EN-US style='font-size:
+9.0pt;font-family:Consolas;color:#0000C0'>CURLINFO_CONTENT_LENGTH_DOWNLOAD</span></i><span
+lang=EN-US style='font-size:9.0pt;font-family:Consolas;color:black'>,
+&amp;dFileSize);</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas'>&nbsp;</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas;color:black'>    </span><span
+lang=EN-US style='font-size:9.0pt;font-family:Consolas;color:#3F7F5F'>/*</span><span
+style='font-size:9.0pt;font-family:Consolas;color:#3F7F5F'>获取失败的话<span
+lang=EN-US>,</span>传入的参数会被赋值为<span lang=EN-US>-1,</span>我这里把最终的文件大小设为<span
+lang=EN-US>0*/</span></span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas;color:black'>    *pnFileSize =
+(dFileSize == -1)? 0 : (size_t)dFileSize;</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas'>&nbsp;</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas;color:black'>    </span><span
+lang=EN-US style='font-size:9.0pt;font-family:Consolas;color:#3F7F5F'>/*</span><span
+style='font-size:9.0pt;font-family:Consolas;color:#3F7F5F'>传入一个参数尝试获取<span
+lang=EN-US>Http</span>返回码<span lang=EN-US>*/</span></span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas;color:black'>    </span><b><span
+lang=EN-US style='font-size:9.0pt;font-family:Consolas;color:#7F0055'>long</span></b><span
+lang=EN-US style='font-size:9.0pt;font-family:Consolas;color:black'> lRespCode
+= 0;</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas;color:black'>   
+curl_easy_getinfo(curl_handle, </span><i><span lang=EN-US style='font-size:
+9.0pt;font-family:Consolas;color:#0000C0'>CURLINFO_RESPONSE_CODE</span></i><span
+lang=EN-US style='font-size:9.0pt;font-family:Consolas;color:black'>,
+&amp;lRespCode);</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas'>&nbsp;</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas;color:black'>    </span><span
+lang=EN-US style='font-size:9.0pt;font-family:Consolas;color:#3F7F5F'>/*</span><span
+style='font-size:9.0pt;font-family:Consolas;color:#3F7F5F'>返回<span lang=EN-US>206</span>则表示服务器支持断点续传<span
+lang=EN-US>*/</span></span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas;color:black'>    *pbDlResumable =
+(lRespCode == 206)? </span><b><span lang=EN-US style='font-size:9.0pt;
+font-family:Consolas;color:#7F0055'>true</span></b><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas;color:black'> : </span><b><span
+lang=EN-US style='font-size:9.0pt;font-family:Consolas;color:#7F0055'>false</span></b><span
+lang=EN-US style='font-size:9.0pt;font-family:Consolas;color:black'>;</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas'>&nbsp;</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas;color:black'>   
+curl_easy_cleanup(curl_handle);</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas;color:black'>   
+curl_global_cleanup();</span></p>
+
+<p class=MsoNormal style='text-autospace:none'><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas;color:black'>    </span><b><span
+lang=EN-US style='font-size:9.0pt;font-family:Consolas;color:#7F0055'>return</span></b><span
+lang=EN-US style='font-size:9.0pt;font-family:Consolas;color:black'> errCode;</span></p>
+
+<p class=MsoNormal><span lang=EN-US style='font-size:9.0pt;font-family:Consolas;
+color:black'>}</span></p>
+
+<p class=MsoNormal><span lang=EN-US style='font-size:9.0pt;font-family:Consolas;
+color:black'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-family:幼圆'>函数解析：</span></p>
+
+<p class=MsoNormal style='margin-left:0cm;text-indent:0cm'><span lang=EN-US>1、</span><span
+style='font-family:幼圆'>关于</span><span lang=EN-US>http</span><span
+style='font-family:幼圆'>头：</span><span lang=EN-US>url</span><span
+style='font-family:幼圆'>链接的一些信息在很多情况下通过服务器响应的</span><span lang=EN-US>http</span><span
+style='font-family:幼圆'>头信息就能获取，如果想了解一个</span><span lang=EN-US>http</span><span
+style='font-family:幼圆'>头具体能返回什么内容，可以去参考一下</span><span lang=EN-US>http</span><span
+style='font-family:幼圆'>协议，这里就不赘述了。为了方便讲解，下面给出一个可能的</span><span lang=EN-US>http</span><span
+style='font-family:幼圆'>头内容：</span></p>
+
+<p class=MsoNormal style='text-indent:21.0pt'><span lang=EN-US>HTTP/1.1 200 OK<br>
+       Server: Microsoft-IIS/5.1<br>
+       Date: Mon, 06 Mar 2006 08:57:39 GMT<br>
+       Connection: close<br>
+       Content-Type: text/html<br>
+       Content-Length: 17222</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=EN-US>2</span><span style='font-family:幼圆'>、我们的需求是获取文件的大小，以及服务器是否支持断点续传，刚好这两点都能通过服务器的</span><span
+lang=EN-US>header</span><span style='font-family:幼圆'>响应信息获取，所以在设置下载选项时，我使用了</span><i><span
+lang=EN-US style='font-size:9.0pt;font-family:Consolas;color:#0000C0'>CURLOPT_NOBODY</span></i><span
+style='font-family:幼圆'>这个选项，代表服务器的回复不需要返回内容，只需要返回包头。</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=EN-US>3</span><span style='font-family:幼圆'>、上一篇指导里我提到了</span><span
+lang=EN-US>curl_easy_getinfo</span><span style='font-family:幼圆'>这个函数，通过上面的例子可以知道，你给这个函数传递一个参数，并告诉它要取某一个信息，它就会从尝试从服务器返回的信息里面找到你请求的信息，写入到你传入的参数。</span></p>
+
+<p class=MsoNormal><span style='font-family:幼圆'>在获取文件大小的时候，我请求获取的是</span><i><span
+lang=EN-US style='font-size:9.0pt;font-family:Consolas;color:#0000C0'>CURLINFO_CONTENT_LENGTH_DOWNLOAD</span></i><span
+style='font-family:幼圆'>，下载的内容长度，亦即下载文件的大小。其原理是从服务器返回的</span><span lang=EN-US>http</span><span
+style='font-family:幼圆'>头中找到</span><b><span lang=EN-US>Content-Length</span></b><span
+style='font-family:幼圆'>域，并把值读出来，比如上面给出的</span><span lang=EN-US>http</span><span
+style='font-family:幼圆'>头里面这个值就是</span><span lang=EN-US>17222</span><span
+style='font-family:幼圆'>，代表目标文件的大小是</span><span lang=EN-US>17222</span><span
+style='font-family:幼圆'>字节。注意这个</span><b><span lang=EN-US>Content-Length</span></b><span
+style='font-family:幼圆'>域并不是</span><span lang=EN-US>http</span><span
+style='font-family:幼圆'>头里必须的，因此有时会存在获取失败的情况。</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:0cm;text-indent:0cm'><span lang=EN-US>4、</span><span
+style='font-family:幼圆'>同理</span><span lang=EN-US>http</span><span
+style='font-family:幼圆'>的返回码也能通过这种方式获取。在示例代码中，我用</span><i><span lang=EN-US
+style='font-size:9.0pt;font-family:Consolas;color:#0000C0'>CURLINFO_RESPONSE_CODE</span></i><span
+style='font-family:幼圆'>取得</span><span lang=EN-US>http</span><span
+style='font-family:幼圆'>的返回码，并对返回码进行判断。一般情况下，返回</span><b><span lang=EN-US>200</span></b><span
+style='font-family:幼圆'>代表</span><span lang=EN-US>url</span><span
+style='font-family:幼圆'>正常可用。不过，如果你指定了要下载的文件内容范围，并且服务器允许这一行为，这个返回码就会是</span><b><span
+lang=EN-US>206</span></b><span style='font-family:幼圆'>。一个文件是否支持断点续传，其本质就是服务器是否允许你从文件的某一段开始下载，而不是每次都要从头开始下。</span></p>
+
+<p class=MsoNormal><span style='font-family:幼圆'>在示例代码中，我给下载设置了</span><i><span
+lang=EN-US style='font-size:9.0pt;font-family:Consolas;color:#0000C0'>CURLOPT_RANGE</span></i><span
+style='font-family:幼圆'>选项，这个选项是指在向服务器发起文件下载请求的同时，指定要下载的文件段。比如把其值赋为</span><span
+lang=EN-US>&quot;1024-4096&quot;</span><span style='font-family:幼圆'>，即是请求下载文件的</span><span
+lang=EN-US>1024</span><span style='font-family:幼圆'>字节到</span><span lang=EN-US>4096</span><span
+style='font-family:幼圆'>字节这一段。示例中的</span><span lang=EN-US>&quot;0-&quot;</span><span
+style='font-family:幼圆'>意思是指下载从第</span><span lang=EN-US>0</span><span
+style='font-family:幼圆'>字节开始的后面所有的内容，即相当于下载整个文件。不过不管你设置的内容段是什么，只要设置了这个请求，服务器就会对这个请求进行响应，如果服务器允许指定内容段下载，就会返回</span><b><span
+lang=EN-US>206</span></b><span style='font-family:幼圆'>，否则会返回</span><b><span
+lang=EN-US>200</span></b><span style='font-family:幼圆'>这个最普通的</span><span
+lang=EN-US>url</span><span style='font-family:幼圆'>有效指示码。</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:0cm;text-indent:0cm'><span lang=EN-US>5、</span><span
+lang=EN-US>curl_easy_perform</span><span style='font-family:幼圆'>的返回码：第一篇中我提到了这个函数是有多种多样的返回码的。姑且不论</span><span
+lang=EN-US>url</span><span style='font-family:幼圆'>指向的文件是否有问题，单是从本端向服务器发起</span><span
+lang=EN-US>url</span><span style='font-family:幼圆'>连接请求，就有数十种可能导致连接失败，这种连接失败包括无法成功发起的，以及连接过程中异常断开的。不过幸好</span><span
+lang=EN-US>libcurl</span><span style='font-family:幼圆'>有在尽可能地帮助我们收集相关信息，让我们能尽可能地定位问题所在。</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-family:幼圆'>从上面的分析可以看出，对于</span><span
+lang=EN-US>url</span><span style='font-family:幼圆'>基本信息的一些获取，与发起连接所使用的协议有关。</span><span
+lang=EN-US>Libcurl</span><span style='font-family:幼圆'>内置了一些常见协议（</span><span
+lang=EN-US>http</span><span style='font-family:幼圆'>、</span><span lang=EN-US>ftp</span><span
+style='font-family:幼圆'>等）的字段获取方法，不过要真正获取到尽可能多的信息，还是得依靠对协议本身的熟悉，通过构造请求，然后从回复里面找出你所需要的信息，这才是一个通用的方法。</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<h2><span style='font-family:宋体'>三、小结</span></h2>
+
+<p class=MsoNormal><span style='font-family:幼圆'>这一篇主要讲述了在开始下载前，对目标</span><span
+lang=EN-US>url</span><span style='font-family:幼圆'>的一些基础信息的获取。当然上面也提到，对这些信息的获取，主要还是依靠对协议的熟悉然后构造出相应的请求，让服务器应答的时候把我们想要的信息携带回来，而</span><span
+lang=EN-US>Libcurl</span><span style='font-family:幼圆'>库本身只是提供了现成的一些处理方法让我们能够快速提取出一些常见协议的字段信息。</span></p>
+
+<p class=MsoNormal><span style='font-family:幼圆'>利用得到的信息，我们就能够对下载过程做出很多调整和控制，从而定制出符合自己业务逻辑的下载过程。计划中下一篇指导将会举一些详细的例子，利用得到的信息，实现诸如下载文件格式过滤、断点续传等功能。</span></p>
+
+</div>
+
+</body>
+
+</html>
