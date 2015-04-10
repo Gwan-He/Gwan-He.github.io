@@ -21,11 +21,11 @@ layout: default
 	{font-family:微软雅黑;
 	panose-1:2 11 5 3 2 2 4 2 2 4;}
 @font-face
-	{font-family:"\@宋体";
-	panose-1:2 1 6 0 3 1 1 1 1 1;}
-@font-face
 	{font-family:"\@微软雅黑";
 	panose-1:2 11 5 3 2 2 4 2 2 4;}
+@font-face
+	{font-family:"\@宋体";
+	panose-1:2 1 6 0 3 1 1 1 1 1;}
  /* Style Definitions */
  p.MsoNormal, li.MsoNormal, div.MsoNormal
 	{margin-top:0cm;
@@ -69,7 +69,7 @@ span.1Char
  /* Page Definitions */
  @page WordSection1
 	{size:595.3pt 841.9pt;
-	margin:72.0pt 90.0pt 72.0pt 90.0pt;}
+	margin:36.0pt 36.0pt 36.0pt 36.0pt;}
 div.WordSection1
 	{page:WordSection1;}
 -->
@@ -83,17 +83,15 @@ div.WordSection1
 
 <h1 align=center style='text-align:center'><span style='font-family:"微软雅黑","sans-serif"'>常见字符串哈希算法</span></h1>
 
-<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-13.5pt;layout-grid-mode:both'><span lang=EN-US style='font-size:9.0pt;
-font-family:宋体;color:green'>// SDBM Hash Function</span></p>
+<p class=MsoNormal><span lang=EN-US style='font-size:9.0pt;font-family:宋体;
+color:green'>// SDBM Hash Function</span></p>
 
-<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-13.5pt;layout-grid-mode:both'><span lang=EN-US style='font-size:9.0pt;
-font-family:宋体;color:black'>unsigned </span><span lang=EN-US style='font-size:
-9.0pt;font-family:宋体;color:blue'>int</span><span lang=EN-US style='font-size:
-9.0pt;font-family:宋体;color:black'> SDBMHash(</span><span lang=EN-US
-style='font-size:9.0pt;font-family:宋体;color:blue'>char</span><span lang=EN-US
-style='font-size:9.0pt;font-family:宋体;color:black'> *str)<br>
+<p class=MsoNormal><span lang=EN-US style='font-size:9.0pt;font-family:宋体;
+color:black'>unsigned </span><span lang=EN-US style='font-size:9.0pt;
+font-family:宋体;color:blue'>int</span><span lang=EN-US style='font-size:9.0pt;
+font-family:宋体;color:black'> SDBMHash(</span><span lang=EN-US style='font-size:
+9.0pt;font-family:宋体;color:blue'>char</span><span lang=EN-US style='font-size:
+9.0pt;font-family:宋体;color:black'> *str)<br>
 {<br>
     unsigned </span><span lang=EN-US style='font-size:9.0pt;font-family:宋体;
 color:blue'>int</span><span lang=EN-US style='font-size:9.0pt;font-family:宋体;
@@ -120,8 +118,8 @@ lang=EN-US style='font-size:9.0pt;font-family:宋体;color:purple'>0x7FFFFFFF</s
 lang=EN-US style='font-size:9.0pt;font-family:宋体;color:black'>);<br>
 }<br>
  <br>
-</span><span lang=EN-US style='font-size:9.0pt;font-family:宋体;color:green'>// RS
-Hash Function<br>
+</span><span lang=EN-US style='font-size:9.0pt;font-family:宋体;color:green'>//
+RS Hash Function<br>
 </span><span lang=EN-US style='font-size:9.0pt;font-family:宋体;color:black'>unsigned
 </span><span lang=EN-US style='font-size:9.0pt;font-family:宋体;color:blue'>int</span><span
 lang=EN-US style='font-size:9.0pt;font-family:宋体;color:black'> RSHash(</span><span
@@ -245,7 +243,7 @@ font-family:宋体;color:black'>;<br>
 lang=EN-US style='font-size:9.0pt;font-family:宋体;color:black'> (*str)<br>
     {<br>
         hash = (hash &lt;&lt; OneEighth) + (*str++);<br>
-        </span><span lang=EN-US style='font-size:9.0pt;font-family:宋体;
+        </span><span lang=EN-US style='font-size:9.0pt;font-family:宋体;
 color:blue'>if</span><span lang=EN-US style='font-size:9.0pt;font-family:宋体;
 color:black'> ((test = hash &amp; HighBits) != </span><span lang=EN-US
 style='font-size:9.0pt;font-family:宋体;color:purple'>0</span><span lang=EN-US
@@ -274,7 +272,7 @@ color:blue'>int</span><span lang=EN-US style='font-size:9.0pt;font-family:宋体
 color:black'> hash = </span><span lang=EN-US style='font-size:9.0pt;font-family:
 宋体;color:purple'>0</span><span lang=EN-US style='font-size:9.0pt;font-family:
 宋体;color:black'>;<br>
-    unsigned </span><span lang=EN-US style='font-size:9.0pt;font-family:宋体;
+    unsigned </span><span lang=EN-US style='font-size:9.0pt;font-family:宋体;
 color:blue'>int</span><span lang=EN-US style='font-size:9.0pt;font-family:宋体;
 color:black'> x    = </span><span lang=EN-US style='font-size:9.0pt;font-family:
 宋体;color:purple'>0</span><span lang=EN-US style='font-size:9.0pt;font-family:
@@ -421,36 +419,53 @@ lang=EN-US style='font-size:9.0pt;font-family:宋体;color:purple'>0x7FFFFFFF</s
 lang=EN-US style='font-size:9.0pt;font-family:宋体;color:black'>);<br>
 }</span></p>
 
-<p class=MsoNormal style='line-height:11.0pt'><span lang=EN-US>&nbsp;</span></p>
+<p class=MsoNormal><span lang=EN-US style='font-family:宋体'>&nbsp;</span></p>
 
-<pre style='line-height:13.5pt'><span lang=EN-US style='font-size:9.0pt;
-color:green'>//</span><span style='font-size:9.0pt;color:green'>用跟元素个数最接近的质数作为散列表的大小</span></pre><pre
-style='line-height:13.5pt'><span lang=EN-US style='font-size:9.0pt;color:blue'>#define</span><span
-lang=EN-US style='font-size:9.0pt;color:black'> NHASH 29989</span></pre><pre
-style='line-height:13.5pt'><span lang=EN-US style='font-size:9.0pt;color:blue'>#define</span><span
-lang=EN-US style='font-size:9.0pt;color:black'> MULT 31</span></pre><pre
-style='line-height:13.5pt'><span lang=EN-US style='font-size:9.0pt;color:black'>&nbsp;</span></pre><pre
-style='line-height:13.5pt'><span lang=EN-US style='font-size:9.0pt;color:black'>unsigned </span><span
-lang=EN-US style='font-size:9.0pt;color:blue'>in</span><span lang=EN-US
-style='font-size:9.0pt;color:black'> hash(</span><span lang=EN-US
-style='font-size:9.0pt;color:blue'>char</span><span lang=EN-US
-style='font-size:9.0pt;color:black'> *p)</span></pre><pre style='line-height:
-13.5pt'><span lang=EN-US style='font-size:9.0pt;color:black'>{</span></pre><pre
-style='line-height:13.5pt'><span lang=EN-US style='font-size:9.0pt;color:black'>    unsigned </span><span
-lang=EN-US style='font-size:9.0pt;color:blue'>int</span><span lang=EN-US
-style='font-size:9.0pt;color:black'> h = </span><span lang=EN-US
-style='font-size:9.0pt;color:purple'>0</span><span lang=EN-US style='font-size:
-9.0pt;color:black'>;</span></pre><pre style='line-height:13.5pt'><span
-lang=EN-US style='font-size:9.0pt;color:black'>    </span><span lang=EN-US
-style='font-size:9.0pt;color:blue'>for</span><span lang=EN-US style='font-size:
-9.0pt;color:black'> (; *p; p++)</span></pre><pre style='line-height:13.5pt'><span
-lang=EN-US style='font-size:9.0pt;color:black'>        h = MULT *h + *p;</span></pre><pre
-style='line-height:13.5pt'><span lang=EN-US style='font-size:9.0pt;color:black'>    </span><span
-lang=EN-US style='font-size:9.0pt;color:blue'>return</span><span lang=EN-US
-style='font-size:9.0pt;color:black'> h % NHASH;</span></pre><pre
-style='line-height:13.5pt'><span lang=EN-US style='font-size:9.0pt;color:black'>}</span></pre>
+<p class=MsoNormal><span lang=EN-US style='font-size:9.0pt;font-family:宋体;
+color:green'>//</span><span style='font-size:9.0pt;font-family:宋体;color:green'>用跟元素个数最接近的质数作为散列表的大小</span></p>
 
-<p class=MsoNormal style='line-height:11.0pt'><span lang=EN-US>&nbsp;</span></p>
+<p class=MsoNormal><span lang=EN-US style='font-size:9.0pt;font-family:宋体;
+color:blue'>#define</span><span lang=EN-US style='font-size:9.0pt;font-family:
+宋体;color:black'> NHASH 29989</span></p>
+
+<p class=MsoNormal><span lang=EN-US style='font-size:9.0pt;font-family:宋体;
+color:blue'>#define</span><span lang=EN-US style='font-size:9.0pt;font-family:
+宋体;color:black'> MULT 31</span></p>
+
+<p class=MsoNormal><span lang=EN-US style='font-size:9.0pt;font-family:宋体;
+color:black'>unsigned </span><span lang=EN-US style='font-size:9.0pt;
+font-family:宋体;color:blue'>in</span><span lang=EN-US style='font-size:9.0pt;
+font-family:宋体;color:black'> hash(</span><span lang=EN-US style='font-size:
+9.0pt;font-family:宋体;color:blue'>char</span><span lang=EN-US style='font-size:
+9.0pt;font-family:宋体;color:black'> *p)</span></p>
+
+<p class=MsoNormal><span lang=EN-US style='font-size:9.0pt;font-family:宋体;
+color:black'>{</span></p>
+
+<p class=MsoNormal><span lang=EN-US style='font-size:9.0pt;font-family:宋体;
+color:black'>    unsigned </span><span lang=EN-US style='font-size:9.0pt;
+font-family:宋体;color:blue'>int</span><span lang=EN-US style='font-size:9.0pt;
+font-family:宋体;color:black'> h = </span><span lang=EN-US style='font-size:9.0pt;
+font-family:宋体;color:purple'>0</span><span lang=EN-US style='font-size:9.0pt;
+font-family:宋体;color:black'>;</span></p>
+
+<p class=MsoNormal><span lang=EN-US style='font-size:9.0pt;font-family:宋体;
+color:black'>    </span><span lang=EN-US style='font-size:9.0pt;font-family:
+宋体;color:blue'>for</span><span lang=EN-US style='font-size:9.0pt;font-family:
+宋体;color:black'> (; *p; p++)</span></p>
+
+<p class=MsoNormal><span lang=EN-US style='font-size:9.0pt;font-family:宋体;
+color:black'>        h = MULT *h + *p;</span></p>
+
+<p class=MsoNormal><span lang=EN-US style='font-size:9.0pt;font-family:宋体;
+color:black'>    </span><span lang=EN-US style='font-size:9.0pt;font-family:
+宋体;color:blue'>return</span><span lang=EN-US style='font-size:9.0pt;font-family:
+宋体;color:black'> h % NHASH;</span></p>
+
+<p class=MsoNormal><span lang=EN-US style='font-size:9.0pt;font-family:宋体;
+color:black'>}</span></p>
+
+<p class=MsoNormal><span lang=EN-US style='font-family:宋体'>&nbsp;</span></p>
 
 </div>
 
